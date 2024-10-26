@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Table, Thead, Tr, Th, Tbody, Td, Button, Flex, Text, Select, Box } from '@chakra-ui/react';
+import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button, Flex, Text, Select, Box } from '@chakra-ui/react';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 
 const Student = () => {
   const [students, setStudents] = useState([]);
@@ -52,10 +53,8 @@ const Student = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((response) => {
-      if (response.ok) {
-        getStudents();
-      }
+    }).then(() => {
+      getStudents();
     });
   };
 
@@ -82,32 +81,36 @@ const Student = () => {
             <p>Loading ...</p>
           ) : (
             <Box bg={'white'} mx={8} mb={8} rounded={'lg'} boxShadow={'0px 4px 6px rgba(0, 0, 0, 0.1)'}>
-              <Table id='table-student'>
-                <Thead>
-                  <Tr>
-                    <Th>No</Th>
-                    <Th>Full Name</Th>
-                    <Th>Faculty</Th>
-                    <Th>Program Study</Th>
-                    <Th>Option</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {ListStudentWithFilters?.map((student, index) => (
-                    <Tr key={index} className='student-data-row'>
-                      <Td>{index + 1}</Td>
-                      <Td>{student.fullname}</Td>
-                      <Td>{student.faculty}</Td>
-                      <Td>{student.programStudy}</Td>
-                      <Td>
-                        <Button colorScheme='red' id={student.id} data-testid={'delete-' + student.id} onClick={handleDeleteButton}>
-                          Delete
-                        </Button>
-                      </Td>
+              <TableContainer mt='2'>
+                <Table id='table-student'>
+                  <Thead>
+                    <Tr>
+                      <Th>No</Th>
+                      <Th>Full Name</Th>
+                      <Th>Faculty</Th>
+                      <Th>Program Study</Th>
+                      <Th>Option</Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
+                  </Thead>
+                  <Tbody>
+                    {ListStudentWithFilters?.map((student, index) => (
+                      <Tr key={index} className='student-data-row'>
+                        <Td>{index + 1}</Td>
+                        <Td>
+                          <Link to={'/student/' + student.id}>{student.fullname}</Link>
+                        </Td>
+                        <Td>{student.faculty}</Td>
+                        <Td>{student.programStudy}</Td>
+                        <Td>
+                          <Button colorScheme='red' id={student.id} data-testid={'delete-' + student.id} onClick={handleDeleteButton}>
+                            Delete
+                          </Button>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
             </Box>
           )}
         </Box>
