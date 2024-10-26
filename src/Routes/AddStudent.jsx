@@ -1,5 +1,6 @@
 import { Box, Flex, FormControl, FormLabel, Input, VStack, Button, Select, Heading } from '@chakra-ui/react';
 import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import { chooseFaculty } from '../utils/chooseFaculty';
 import { useNavigate } from 'react-router-dom';
@@ -77,23 +78,28 @@ const AddStudent = () => {
     });
   };
 
-  const handleForm = (e) => {
+  const createStudent = async () => {
+    try {
+      await fetch('http://localhost:3001/student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formStudent,
+          faculty,
+        }),
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleForm = async (e) => {
     e.preventDefault();
 
-    fetch('http://localhost:3001/student', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...formStudent,
-        faculty,
-      }),
-    }).then((response) => {
-      if (response.ok) {
-        navigate('/student');
-      }
-    });
+    await createStudent();
+    navigate('/student');
   };
 
   return (
@@ -123,7 +129,7 @@ const AddStudent = () => {
               <Flex w={'full'} justify={'space-between'} gap={4}>
                 <FormControl id='date' isRequired>
                   <FormLabel>Birth Date</FormLabel>
-                  <Input type='date' name='date' data-testid='date' onChange={handleInput} />
+                  <Input type='date' name='birthDate' data-testid='date' onChange={handleInput} />
                 </FormControl>
                 <FormControl id='gender' isRequired>
                   <FormLabel>Gender</FormLabel>
@@ -149,13 +155,14 @@ const AddStudent = () => {
                   ))}
                 </Select>
               </FormControl>
-              <Button type='submit' rounded={'lg'} bg={'blue.400'} textColor={'white'} _hover={{ bg: 'blue.500' }}>
+              <Button type='submit' data-testid='add-btn' rounded={'lg'} bg={'blue.400'} textColor={'white'} _hover={{ bg: 'blue.500' }}>
                 Add Student
               </Button>
             </VStack>
           </form>
         </Box>
       </Flex>
+      <Footer />
     </>
   );
 };
