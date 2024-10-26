@@ -53,7 +53,7 @@ const Student = () => {
         <Text fontSize={'2xl'} fontWeight={'bold'}>
           All Student
         </Text>
-        <Select w={'lg'} onChange={(e) => setOption(e.target.value)}>
+        <Select w={'lg'} onChange={(e) => setOption(e.target.value)} data-testid='filter'>
           {facultyOptions.map((option, index) => (
             <option key={index} value={option.value}>
               {option.name}
