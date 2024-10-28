@@ -3,12 +3,12 @@ import { Box, Text, Center } from '@chakra-ui/react';
 const Footer = () => {
   return (
     <Box className='footer' as='footer' background={'blue.600'} color={'white'} py={2}>
-      <Text className='studentName'>
-        <Center>Sholikul Ardian</Center>
-      </Text>
-      <Text className='studentId'>
-        <Center>FS11861819</Center>
-      </Text>
+      <Center>
+        <Text className='studentName'>Sholikul Ardian</Text>
+      </Center>
+      <Center>
+        <Text className='studentId'>FS11861819</Text>
+      </Center>
     </Box>
   );
 };
